@@ -1,0 +1,20 @@
+.navbar-nav{
+  margin-left: 1vw;
+  display: flex;
+  align-items: center;
+}
+
+.positive{
+  color: green;
+}
+.negative{
+  color:red;
+}
+
+.comments{
+  font-style: italic;
+}
+
+.comment-author{
+  font-weight: bold;
+}
