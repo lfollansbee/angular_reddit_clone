@@ -1,6 +1,19 @@
 var app = angular.module("redditClone", []);
 
 app.controller("Reddit", function($scope){
+  $scope.submitForm = function(isValid){
+    console.log(this.post.title);
+    if (isValid) {
+      var newPost = new this.Post();
+      newPost.title = this.post.title;
+      newPost.author = this.post.author;
+      newPost.description = this.post.description;
+      newPost.image = this.post.image;
+      $scope.posts.push(newPost);
+      $scope.post = {};
+    }
+  }
+
   $scope.Post = function(){
     this.date = new Date();
     this.votes = 0;
@@ -13,6 +26,7 @@ app.controller("Reddit", function($scope){
     this.comments = [];
     this.addComment = function (){
       var newComment = angular.copy(this.formComment);
+      this.comments.push(newComment);
     }
   }
 
@@ -40,7 +54,11 @@ app.controller("Reddit", function($scope){
           author: 'Heather',
           text: 'It\s the coziest.'
         }
-      ]
+      ],
+      addComment: function (){
+        var newComment = angular.copy(this.formComment);
+        this.comments.push(newComment);
+      }
     },
     {
       title: 'Lake Hotel',
@@ -61,7 +79,11 @@ app.controller("Reddit", function($scope){
           author: 'Billy the Bison',
           text:'It\'s so yellow...stone'
         }
-      ]
+      ],
+      addComment: function (){
+        var newComment = angular.copy(this.formComment);
+        this.comments.push(newComment);
+      }
     },
     {
       title: 'Roosevelt Lodge and Cabins',
@@ -82,12 +104,11 @@ app.controller("Reddit", function($scope){
           author: 'Wolfie',
           text:'This is my favorite.'
         }
-      ]
+      ],
+      addComment: function (){
+        var newComment = angular.copy(this.formComment);
+        this.comments.push(newComment);
+      }
     }
   ];
-  $scope.posts.showForm = 0;
-
-  $scope.showSubmitPostForm = function() {
-    $scope.posts.showForm ++
-  };
 })

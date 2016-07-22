@@ -19,10 +19,10 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li ng-click="showSubmitPostForm()"><i class="fa fa-plus" aria-hidden="true"></i> Submit Post</li>
-              <div class="form-group navbar-form navbar-left">
-                <input type="text" class="form-control" placeholder="Search" ng-model="searchText">
-              </div>
+            <li ng-click="isSubmitPostFormShowing= !isSubmitPostFormShowing"><i class="fa fa-plus" aria-hidden="true"></i> Submit Post</li>
+            <div class="form-group navbar-form navbar-left">
+              <input type="text" class="form-control" placeholder="Search" ng-model="searchText">
+            </div>
             <li>Sort By
               <select ng-model="sortBy">
                 <option value="-votes">Votes</a></option>
@@ -36,26 +36,33 @@
     </header>
     <main>
       <section class="container">
-
         <!-- NEW POST FORM -->
-        <form ng-show="posts.showForm % 2 === 1" name="addPost" ng-submit="addPost()">
-          <div class="form-group">
+        <form ng-show="isSubmitPostFormShowing" name="addPost" ng-submit="submitForm(addPost.$valid)" novalidate>
+          <!-- TITLE -->
+          <div class="form-group" ng-class="{'has-error': addPost.title.$invalid && !addPost.title.$pristine,'has-success':addPost.title.$valid}">
             <label for="">Title</label>
-            <input name="title" type="text" class="form-control" id="title" placeholder="Title">
+            <input name="title" type="text" class="form-control" id="title" placeholder="Title" ng-model="post.title" ng-minlength="3">
+            <p ng-show="addPost.title.$error.minlength" class="error-message">Your title is too short.</p>
           </div>
-          <div class="form-group">
+          <!-- AUTHOR -->
+          <div class="form-group" ng-class="{'has-error': addPost.author.$invalid && !addPost.author.$pristine,'has-success':addPost.author.$valid}">
             <label for="author">Author</label>
-            <input name="author" type="password" class="form-control" id="author" placeholder="Author">
+            <input name="author" type="text" class="form-control" id="author" placeholder="Author" ng-model="post.author" ng-minlength="3">
+            <p ng-show="addPost.author.$error.minlength" class="error-message">The name you entered is not long enough</p>
           </div>
-          <div class="form-group">
+          <!-- IMAGE -->
+          <div class="form-group" ng-class="{'has-error': addPost.image.$invalid && !addPost.image.$pristine, 'has-success':addPost.image.$valid}">
             <label for="">Image URL</label>
-            <input name="image" type="url" class="form-control" id="image" placeholder="Image URL">
+            <input name="image" type="url" class="form-control" id="image" placeholder="Image URL" ng-model="post.image">
+            <p ng-show="addPost.image.$invalid" class="error-message">That is not a valid URL</p>
           </div>
-          <div class="form-group">
+          <!-- DESCRIPTION -->
+          <div class="form-group" ng-class="{'has-error': addPost.description.$invalid && !addPost.description.$pristine, 'has-success':addPost.description.$valid}">
             <label for="description">Description</label>
-            <input name="description" type="description" class="form-control" id="description" placeholder="Description">
+            <input name="description" type="description" class="form-control" id="description" placeholder="Description" ng-model="post.description" ng-minlength="10">
+            <p ng-show="addPost.description.$error.minlength" class="error-message">Your description is not long enough.</p>
           </div>
-          <button type="submit" class="btn btn-default">Submit Post</button>
+          <button type="submit" class="btn btn-default" ng-disabled="postForm.$invalid">Submit Post</button>
         </form>
 
         <!-- POSTS LISTED -->
